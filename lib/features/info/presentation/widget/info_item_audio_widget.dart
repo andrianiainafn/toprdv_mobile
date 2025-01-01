@@ -135,6 +135,17 @@ class _InfoItemAudioWidgetState extends State<InfoItemAudioWidget> {
 
     return Container(
       margin: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: Colors.white.withAlpha(77),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(20),
+              blurRadius: 10,
+              offset: Offset(0, 4),
+            )
+          ]
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
