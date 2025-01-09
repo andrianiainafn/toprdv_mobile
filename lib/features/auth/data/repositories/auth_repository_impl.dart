@@ -2,9 +2,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:my_template_project/core/error/failure.dart';
 import 'package:my_template_project/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:my_template_project/features/auth/data/models/auth_request_mapper.dart';
 import 'package:my_template_project/features/auth/domain/entity/auth_response.dart';
 import 'package:my_template_project/features/auth/domain/repositories/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../domain/entity/auth_request.dart';
 
 class AuthRepositoryImpl extends AuthRepository{
   final SharedPreferences sharedPreferences;
@@ -26,9 +28,24 @@ class AuthRepositoryImpl extends AuthRepository{
   }
 
   @override
-  Future<Either<Failure, void>> signup({required String email, required String password}) {
-    // TODO: implement signup
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> signup({required AuthRequest authRequest})async {
+    try{
+      final response = await authRemoteDataSource.signup(authRequest.toModel());
+      return Right(response);
+    }on ServerFailure{
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> registerToken({required String token})async {
+    try{
+      final userId = sharedPreferences.getString('appUserId');
+      final response = await authRemoteDataSource.registerPushToken(token, int.parse(userId!));
+      return Right(response);
+    }on Failure{
+      return Left(ServerFailure());
+    }
   }
 
 }

@@ -10,7 +10,13 @@ class Login extends AuthEvent {
   @override
   List<Object?> get props => [];
 }
-class Signup extends AuthEvent {
+class LogoutEvent extends AuthEvent {
   @override
   List<Object?> get props => [];
+}
+class Signup extends AuthEvent {
+  final AuthRequest authRequest;
+  const Signup(this.authRequest);
+  @override
+  List<Object?> get props => [authRequest];
 }

@@ -30,3 +30,19 @@ class ErrorState extends AuthState {
   @override
   List<Object?> get props => [message];
 }
+
+class LoadedLogout extends AuthState{
+  @override
+  List<Object?> get props => [];
+}
+
+class ErrorStateLogout extends AuthState {
+  final String message;
+  const ErrorStateLogout({required this.message});
+  @override
+  List<Object?> get props => [message];
+}
+class LoadingLogout extends AuthState{
+  @override
+  List<Object?> get props => [];
+}
