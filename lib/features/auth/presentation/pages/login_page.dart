@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_template_project/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:my_template_project/features/auth/presentation/bloc/token_bloc.dart';
 import 'package:my_template_project/features/auth/presentation/widget/login_form_widget.dart';
 
 import '../../../../injection_container.dart';
@@ -31,6 +32,9 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-BlocProvider<AuthBloc> buildBody(BuildContext context) {
-  return BlocProvider(create: (context)=> sl<AuthBloc>(), child: LoginFormWidget(),);
+MultiBlocProvider buildBody(BuildContext context) {
+  return MultiBlocProvider(providers: [
+    BlocProvider(create: (context)=> sl<AuthBloc>()),
+    BlocProvider(create: (context)=> sl<TokenBloc>())
+  ], child: LoginFormWidget());
 }
