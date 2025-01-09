@@ -1,5 +1,10 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template_project/features/auth/presentation/widget/signup_form_widget.dart';
+
+import '../../../../injection_container.dart';
+import '../bloc/auth_bloc.dart';
 
 
 @RoutePage()
@@ -20,10 +25,14 @@ class SignUpPage extends StatelessWidget {
           ),
           Container(
             margin: const EdgeInsets.all(10),
-            child: Text(''),
+            child: buildBody(context),
           )
         ],
       ),
     );
   }
+}
+
+BlocProvider<AuthBloc> buildBody(BuildContext context) {
+  return BlocProvider<AuthBloc>(create: (context)=> sl<AuthBloc>(),child: SignupFormWidget(),);
 }

@@ -46,14 +46,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
-  audio_session:
-    dependency: "direct main"
-    description:
-      name: audio_session
-      sha256: b2a26ba8b7efa1790d6460e82971fde3e398cfbe2295df9dea22f3499d2c12a7
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.23"
   audioplayers:
     dependency: "direct main"
     description:
@@ -457,10 +449,10 @@ packages:
     dependency: transitive
     description:
       name: http_parser
-      sha256: "76d306a1c3afb33fe82e2bbacad62a61f409b5634c915fceb0d799de1a913360"
+      sha256: "178d74305e7866013777bab2c3d8726205dc5a4dd935297175b19a23a2e66571"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.1"
+    version: "4.1.2"
   intl:
     dependency: "direct main"
     description:
@@ -509,30 +501,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.9.0"
-  just_audio:
-    dependency: "direct main"
-    description:
-      name: just_audio
-      sha256: a49e7120b95600bd357f37a2bb04cd1e88252f7cdea8f3368803779b925b1049
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.9.42"
-  just_audio_platform_interface:
-    dependency: transitive
-    description:
-      name: just_audio_platform_interface
-      sha256: "0243828cce503c8366cc2090cefb2b3c871aa8ed2f520670d76fd47aa1ab2790"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.3.0"
-  just_audio_web:
-    dependency: transitive
-    description:
-      name: just_audio_web
-      sha256: "9a98035b8b24b40749507687520ec5ab404e291d2b0937823ff45d92cb18d448"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.4.13"
   leak_tracker:
     dependency: transitive
     description:
@@ -645,6 +613,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  onesignal_flutter:
+    dependency: "direct main"
+    description:
+      name: onesignal_flutter
+      sha256: c60e253f4bfdbd2bd25c47e491bfd4ab8bd0336ad288b2873bd81f839b07ad8e
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.2.9"
   package_config:
     dependency: transitive
     description:
@@ -813,22 +789,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
-  rxdart:
-    dependency: transitive
-    description:
-      name: rxdart
-      sha256: "5c3004a4a8dbb94bd4bf5412a4def4acdaa12e12f269737a5751369e12d1a962"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.28.0"
   shared_preferences:
     dependency: "direct main"
     description:
       name: shared_preferences
-      sha256: "3c7e73920c694a436afaf65ab60ce3453d91f84208d761fbd83fc21182134d93"
+      sha256: a752ce92ea7540fc35a0d19722816e04d0e72828a4200e83a98cf1a1eb524c9a
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.4"
+    version: "2.3.5"
   shared_preferences_android:
     dependency: transitive
     description:

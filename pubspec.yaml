@@ -38,10 +38,12 @@ dependencies:
   freezed_annotation: ^2.4.4
   json_annotation:
   intl: ^0.20.1
-  audio_session:
-  just_audio:
   audioplayers:
   video_player:
+#  firebase_core:
+#  firebase_messaging:
+#  flutter_local_notifications:
+  onesignal_flutter: ^5.2.9
 
 
 dev_dependencies:
