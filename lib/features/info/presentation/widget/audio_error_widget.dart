@@ -17,6 +17,6 @@ class AudioErrorWidget extends StatelessWidget {
           ),
         ),
       ),
-    );;
+    );
   }
 }

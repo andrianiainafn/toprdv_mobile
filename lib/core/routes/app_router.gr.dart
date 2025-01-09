@@ -24,7 +24,7 @@ import 'package:my_template_project/features/notification/presentation/pages/not
     as _i6;
 import 'package:my_template_project/features/profile/presentation/pages/profile_page.dart'
     as _i7;
-import 'package:my_template_project/features/signup/presentation/pages/user_registration_page.dart'
+import 'package:my_template_project/features/register/presentation/pages/user_registration_page.dart'
     as _i9;
 
 /// generated route for
