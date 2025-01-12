@@ -29,7 +29,8 @@ class _BrandFormWidgetState extends State<BrandFormWidget> {
     });
   }
   void onSubmitForm(){
-
+    print("brand selected : $brandSelected");
+    BlocProvider.of<RelatedUsersBloc>(context).add(UpdateRelatedUserEvent(brandSelected));
   }
 
   bool checkBrandAlreadySelected(Brand brand) {

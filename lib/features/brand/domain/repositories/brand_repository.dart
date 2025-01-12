@@ -7,5 +7,6 @@ import '../../../../core/error/failure.dart';
 abstract class BrandRepository{
     Future<Either<Failure,List<Brand>>> getBrand();
     Future<Either<Failure,List<RelatedBrand>>>  getRelatedBrand();
+    Future<Either<Failure,List<RelatedBrand>>> updateRelatedBrand(List<RelatedBrand> relatedBrand);
 
 }

@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class BrandRemoteDataSource{
   Future<List<BrandModel>> getBrand();
   Future<List<RelatedBrandModel>> getRelatedBrand();
+  Future<List<RelatedBrandModel>> updateRelatedBrand(List<RelatedBrandModel> relatedBrand);
 }
 
 class BrandRemoteDataSourceImpl implements BrandRemoteDataSource{
@@ -65,6 +66,38 @@ class BrandRemoteDataSourceImpl implements BrandRemoteDataSource{
           .toList();
     } else {
       throw Exception('failed to fetch related brand');
+    }
+  }
+
+  @override
+  Future<List<RelatedBrandModel>> updateRelatedBrand(List<RelatedBrandModel> relatedBrand) async{
+    final userId = sharedPreferences.getString('appUserId');
+    final url = Uri.parse('${dotenv.env['BASE_URL']}/app-users/related-users/$userId');
+    final String? token = sharedPreferences.getString('access_token');
+    final Map<String, dynamic> requestBody = {
+      'relatedUsersId': relatedBrand.map((brand) => {
+        'id': brand.id,
+        'value': brand.brandName,
+      }).toList(),
+    };
+    final response = await client.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      body: jsonEncode(requestBody)
+    );
+    if(response.statusCode == 200) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      final List<dynamic> relatedUsersData = responseData['relatedUsersId'];
+
+      return relatedUsersData.map((userData) => RelatedBrandModel(
+        id: userData['id'],
+        brandName: userData['value'],
+      )).toList();
+    }else{
+      throw Exception("Failed to  update related brand");
     }
   }
 
