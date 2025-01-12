@@ -7,6 +7,6 @@ class RelatedBrand extends Equatable{
   const RelatedBrand({required this.id,required this.brandName});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [id,brandName];
 
 }
