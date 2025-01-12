@@ -5,8 +5,10 @@ import 'package:my_template_project/core/global/action_button.dart';
 import 'package:my_template_project/core/global/date_time_input.dart';
 import 'package:my_template_project/core/global/input_select_widget.dart';
 import 'package:my_template_project/core/global/phone_number_input.dart';
+import 'package:my_template_project/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:my_template_project/features/register/domain/entity/register.dart';
 
+import '../../../../core/config/ably_service.dart';
 import '../../../../core/global/input_widget.dart';
 import '../../../brand/presentation/bloc/brand_bloc.dart';
 import '../bloc/register_bloc.dart';
@@ -53,15 +55,16 @@ class _RegistrationFormWidgetState extends State<RegistrationFormWidget> {
       )
     ));
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocListener<RegisterBloc, RegisterState>(
-      listener: (context, state) {
-        if(state is RegisterLoaded){
-
-        }
-      },
+  @override Widget build(BuildContext context) {
+    return BlocListener<RegisterBloc,RegisterState>( listener: (context, state) {
+      if(state is RegisterLoaded){
+        final ablyService = AblyService();
+        ablyService.initAbly();
+        ablyService.publishAppointment({
+          'appointment': "appointment",
+        });
+    }
+    },
       child: Form(
           key: _formKey,
           child: Column(
