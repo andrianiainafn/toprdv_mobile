@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 
 class InfoItem extends Equatable{
   final int id;
-  final String audioLink;
-  final String videoLink;
-  final String text;
-  final String flyerLink;
+  final String? audioLink;
+  final String? videoLink;
+  final String? text;
+  final String? flyerLink;
   final String infoFormat;
   final DateTime createdAt;
   final String brandName;

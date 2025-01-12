@@ -9,10 +9,10 @@ part 'info_item_model.g.dart';
 class InfoItemModel extends InfoItem with _$InfoItemModel{
   const factory InfoItemModel({
     required int id,
-    required  String audioLink,
-    required String videoLink,
-    required String text,
-    required String flyerLink,
+    required  String? audioLink,
+    required String? videoLink,
+    required String? text,
+    required String? flyerLink,
     required String infoFormat,
     required DateTime createdAt,
     required String brandName,

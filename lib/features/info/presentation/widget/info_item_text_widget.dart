@@ -12,6 +12,7 @@ class InfoItemTextWidget extends StatefulWidget {
 
 class _InfoItemTextWidgetState extends State<InfoItemTextWidget> {
   late bool _showMore = false;
+  late int end = 100;
 
   void setShowMore(){
     setState(() {
@@ -19,8 +20,18 @@ class _InfoItemTextWidgetState extends State<InfoItemTextWidget> {
     });
   }
   @override
+  void initState() {
+    super.initState();
+    setState(() {
+      if (end > widget.content.length) {
+        end = widget.content.length;
+      }
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       decoration: BoxDecoration(
           color: Colors.white.withAlpha(77),
         borderRadius: BorderRadius.circular(12),
@@ -41,7 +52,7 @@ class _InfoItemTextWidgetState extends State<InfoItemTextWidget> {
           Text(widget.brand, style: TextStyle(fontSize: 18,color: Colors.green),),
           Text( formatDate(widget.date) ),
           Text(
-            _showMore ? widget.content : '${widget.content.substring(0, 100)}...',
+            _showMore ? widget.content : '${widget.content.substring(0, 3)}...',
             style: TextStyle(fontSize: 16),
           ),
           TextButton(onPressed: setShowMore, child: Text("Voire plus"))
