@@ -20,11 +20,12 @@ class AppRouter extends RootStackRouter{
           path: '/signup',
           page: SignUpRoute.page
       ),
+    AutoRoute(page: ProfileRoute.page),
     AutoRoute(
         page: NavigationRoute.page,
         path:'/',
         children:[
-          AutoRoute(page: NotificationRoute.page),
+          AutoRoute(page: NotificationRoute.page,fullscreenDialog: true, path: "notification"),
           AutoRoute(page: UserRegistrationRoute.page),
           AutoRoute(page: BeaconScannerRoute.page),
           AutoRoute(page: BrandRoute.page),
@@ -32,7 +33,10 @@ class AppRouter extends RootStackRouter{
         ],
       guards:  [AuthGuard(sl<SharedPreferences>())]
     ),
-    AutoRoute(page: ProfileRoute.page),
+    AutoRoute(
+        page: ChooseRoute.page,
+        path:"/choose"
+    )
   ];
 
 }
