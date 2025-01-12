@@ -1,6 +1,11 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_template_project/features/notification/presentation/bloc/change_rank_bloc.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'dart:async';
+import '../../../../core/config/notification_handler.dart';
+import '../bloc/notification_confirmation_bloc.dart';
 
 @RoutePage()
 class NotificationPage extends StatefulWidget {
@@ -11,105 +16,128 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  late  List<OSNotification> _notifications = [];
-  String _debugLabelString = "";
-
+  late int appointmentId;
   @override
   void initState() {
     super.initState();
     _initializeOneSignal();
   }
 
-
   void _initializeOneSignal() async {
-    // Configure OneSignal
     OneSignal.initialize("98a5e1a6-25f4-4d98-8995-69db1278271e");
     OneSignal.LiveActivities.setupDefault();
 
     OneSignal.User.pushSubscription.addObserver((state) {
       print('optedIn: ${OneSignal.User.pushSubscription.optedIn}');
-      print('id ${OneSignal.User.pushSubscription.id}');
+      print('id: ${OneSignal.User.pushSubscription.id}');
       print('token: ${OneSignal.User.pushSubscription.token}');
       print(state.current.jsonRepresentation());
     });
+
     await getToken();
-    // Listen for received notifications
+
     OneSignal.Notifications.addForegroundWillDisplayListener((event) {
-      setState(() {
-        _notifications = [..._notifications, event.notification];
-      });
-      print(
-          'NOTIFICATION WILL DISPLAY LISTENER CALLED WITH: ${event.notification.jsonRepresentation()}');
-
-      /// Display Notification, preventDefault to not display
+      print('NOTIFICATION WILL DISPLAY LISTENER CALLED WITH: ${event.notification.jsonRepresentation()}');
       event.preventDefault();
-
-      /// Do async work
-
-      /// notification.display() to display after preventing default
+      context.read<NotificationConfirmationBloc>().add(
+        HandleNewNotification(event.notification),
+      );
       event.notification.display();
-
-      setState(() {
-        _debugLabelString =
-        "Notification received in foreground notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
-      });
     });
+
     OneSignal.Notifications.addClickListener((event) {
+      NotificationHandler.handleNotificationClick(event.notification);
       print('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
-      this.setState(() {
-        _debugLabelString =
-        "Clicked notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
-      });
-    });
-    OneSignal.Notifications.addForegroundWillDisplayListener((event) {
-      print(
-          'NOTIFICATION WILL DISPLAY LISTENER CALLED WITH: ${event.notification.jsonRepresentation()}');
-
-      /// Display Notification, preventDefault to not display
-      event.preventDefault();
-
-      /// Do async work
-
-      /// notification.display() to display after preventing default
-      event.notification.display();
-
-      this.setState(() {
-        _debugLabelString =
-        "Notification received in foreground notification: \n${event.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
-      });
+      context.read<NotificationConfirmationBloc>().add(
+        HandleNewNotification(event.notification),
+      );
     });
   }
-
-
+  void updateAppointmentId(int id){
+    setState(() {
+      appointmentId = id;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(10),
-      child: _notifications.isEmpty
-          ? const Center(child: Text('Aucune notification'))
-          : ListView.builder(
-        itemCount: _notifications.length,
-        itemBuilder: (context, index) {
-          final notification = _notifications[index];
-          return Card(
-            child: ListTile(
-              title: Text(notification.title ?? 'Pas de titre'),
-              subtitle: Text(notification.body ?? 'Pas de contenu'),
-              trailing: Text( DateTime.now().toString(),
-                style: const TextStyle(fontSize: 12),
+      child: BlocConsumer<NotificationConfirmationBloc, NotificationConfirmationState>(
+        listener: (context,state){
+          if(state is NotificationConfirmationTimeOut){
+            BlocProvider.of<ChangeRankBloc>(context).add(HandleChangeRank(appointmentId));
+          }
+        },
+        builder: (context, state) {
+          if (state is NotificationConfirmationLoaded) {
+            updateAppointmentId(state.notification.additionalData?['appointment_id']);
+            return Card(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0), // Ajout d'un padding pour plus d'espace
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Aligner les textes à gauche
+                  children: [
+                    // Première ligne : Titre et bouton
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Éléments aux extrémités
+                      children: [
+                        Expanded( // Pour que le titre prenne tout l'espace disponible
+                          child: Text(
+                            state.notification.title ?? 'Pas de titre',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis, // Truncate si le titre est trop long
+                          ),
+                        ),
+                        const SizedBox(width: 8), // Espacement entre le titre et le bouton
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<NotificationConfirmationBloc>().add(
+                              ConfirmNotification(),
+                            );
+                          },
+                          child: const Text('Confirmer'),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4), // Espacement entre les lignes
+
+                    // Deuxième ligne : Body et date/heure
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Éléments aux extrémités
+                      children: [
+                        Expanded( // Le body prend tout l'espace disponible
+                          child: Text(
+                            state.notification.body ?? 'Pas de contenu',
+                            style: const TextStyle(fontSize: 14),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis, // Truncate si le contenu est trop long
+                          ),
+                        ),
+                        const SizedBox(width: 8), // Espacement entre le body et la date
+                        Text(
+                          DateTime.now().toString(),
+                          style: const TextStyle(fontSize: 12, color: Colors.grey),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
+            );
+          }
+          return const Center(child: Text('Aucune notification'));
         },
       ),
     );
   }
 }
 
-Future<void> getToken()async{
+Future<void> getToken() async {
   print('optedIn: ${OneSignal.User.pushSubscription.optedIn}');
   print('id ${OneSignal.User.pushSubscription.id}');
   print('token: ${OneSignal.User.pushSubscription.token}');
 }
-//os_v2_app_tcs6djrf6rgzrcmvnhnre6bhd2f4gx6kh2du4mumpsv7hzyoqvqhhxasl2cs7ybsgwkkuxjr4drhuioxxamgbkgysnye3cknd24kgxa
