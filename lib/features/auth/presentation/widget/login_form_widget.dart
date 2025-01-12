@@ -18,7 +18,7 @@ class LoginFormWidget extends StatefulWidget {
 
 class _LoginFormWidgetState extends State<LoginFormWidget> {
   final _formKey = GlobalKey<FormState>();
-  late String token;
+  late String token='';
   final Map<String, dynamic> _formData = {
     'email': 'test@gmail.com',
     'password': 'securePassword123',
