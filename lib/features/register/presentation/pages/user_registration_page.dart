@@ -14,15 +14,18 @@ class UserRegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Column(
         children: [
           Container(
             margin: const EdgeInsets.all(10),
             child: Text("Inscrire une autre personne",style: TextStyle(fontSize: 20),),
           ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: buildForm(context),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(10),
+              child: buildForm(context),
+            ),
           )
         ],
       )
