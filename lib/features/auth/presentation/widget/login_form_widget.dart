@@ -60,7 +60,9 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
           listener: (context, state) {
             if (state is Loaded) {
               setState(() => _isAuthLoaded = true);
-              BlocProvider.of<TokenBloc>(context).add(RegisterTokenEvent(token));
+              if(token != ''){
+                BlocProvider.of<TokenBloc>(context).add(RegisterTokenEvent(token));
+              }
             }
             if (state is ErrorState) {
               ScaffoldMessenger.of(context).showSnackBar(
