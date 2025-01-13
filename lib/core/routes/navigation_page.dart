@@ -32,6 +32,7 @@ class NavigationPage extends StatelessWidget {
           ablyService.initAbly();
           ablyService.newInfoAdded(context);
           return Scaffold(
+            resizeToAvoidBottomInset: true,
             body: NestedScrollView(
               headerSliverBuilder: (context, innerBoxIsScrolled) {
                 return <Widget>[
