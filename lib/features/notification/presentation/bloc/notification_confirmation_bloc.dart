@@ -9,10 +9,12 @@ part 'notification_confirmation_state.dart';
 
 class NotificationConfirmationBloc extends Bloc<NotificationConfirmationEvent, NotificationConfirmationState> {
   Timer? _notificationTimer;
+  int? currentAppointmentId;
 
   NotificationConfirmationBloc() : super(NotificationConfirmationInitial()) {
     on<HandleNewNotification>((event, emit) {
       _notificationTimer?.cancel();
+      currentAppointmentId = event.notification.additionalData?['appointment_id'];
       emit(NotificationConfirmationLoaded(event.notification));
       _startNotificationTimer();
     });
