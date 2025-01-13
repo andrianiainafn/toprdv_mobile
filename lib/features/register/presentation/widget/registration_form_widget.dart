@@ -21,7 +21,7 @@ class RegistrationFormWidget extends StatefulWidget {
 }
 
 class _RegistrationFormWidgetState extends State<RegistrationFormWidget> {
-
+  late  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
   PhoneNumber? _phoneNumber;
   final Map<String, dynamic> _formData = {
@@ -44,6 +44,9 @@ class _RegistrationFormWidgetState extends State<RegistrationFormWidget> {
 
   void onSubmit() {
     print(_formData);
+    setState(() {
+      isLoading= true;
+    });
     BlocProvider.of<RegisterBloc>(context).add(RegisterUserEvent(
       Register(
           _formData['email'],
@@ -56,67 +59,73 @@ class _RegistrationFormWidgetState extends State<RegistrationFormWidget> {
     ));
   }
   @override Widget build(BuildContext context) {
-    return BlocListener<RegisterBloc,RegisterState>( listener: (context, state) {
+    return BlocListener<RegisterBloc,RegisterState>(
+      listener: (context, state) {
       if(state is RegisterLoaded){
         final ablyService = AblyService();
         ablyService.initAbly();
         ablyService.publishAppointment({
           'appointment': "appointment",
         });
+        setState(() {
+          isLoading = false;
+        });
     }
     },
-      child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              InputWidget(
-                icon: Icons.person_2_outlined,
-                type: 'text',
-                title: 'Nom',
-                onChanged: (value) => _onInputChanged('firstname', value),
-              ),
-              InputWidget(
-                icon: Icons.person_2_outlined,
-                type: 'text',
-                title: 'Prénom',
-                onChanged: (value) => _onInputChanged('lastname', value),
-              ),
-              InputWidget(
-                icon: Icons.alternate_email_outlined,
-                type: 'email',
-                title: 'Email Address',
-                onChanged: (value) => _onInputChanged('email', value),
-              ),
-              PhoneNumberInput(onChanged: (PhoneNumber number) {
-                _phoneNumber = number;
-                _onInputChanged('phoneNumber', _phoneNumber?.phoneNumber);
-              }, phoneNumber: _phoneNumber),
-              DateTimeInput(selectedDateTime: DateTime.now(),
-                  onDateTimeChanged: (DateTime? selectedDateTime) {
-                    _onInputChanged('date', selectedDateTime);
-                  }),
-              BlocConsumer<BrandBloc, BrandState>(
-                listener: (context, state) {
+      child: SingleChildScrollView(
+        child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                InputWidget(
+                  icon: Icons.person_2_outlined,
+                  type: 'text',
+                  title: 'Nom',
+                  onChanged: (value) => _onInputChanged('firstname', value),
+                ),
+                InputWidget(
+                  icon: Icons.person_2_outlined,
+                  type: 'text',
+                  title: 'Prénom',
+                  onChanged: (value) => _onInputChanged('lastname', value),
+                ),
+                InputWidget(
+                  icon: Icons.alternate_email_outlined,
+                  type: 'email',
+                  title: 'Email Address',
+                  onChanged: (value) => _onInputChanged('email', value),
+                ),
+                PhoneNumberInput(onChanged: (PhoneNumber number) {
+                  _phoneNumber = number;
+                  _onInputChanged('phoneNumber', _phoneNumber?.phoneNumber);
+                }, phoneNumber: _phoneNumber),
+                DateTimeInput(selectedDateTime: DateTime.now(),
+                    onDateTimeChanged: (DateTime? selectedDateTime) {
+                      _onInputChanged('date', selectedDateTime);
+                    }),
+                BlocConsumer<BrandBloc, BrandState>(
+                  listener: (context, state) {
 
-                },
-                builder: (context, state) {
-                  if(state is BrandInitial){
-                    BlocProvider.of<BrandBloc>(context).add(GetBrandEvent());
-                  }
-                 if(state is LoadingBrand){
-                   return Text("Loading brand");
-                 }
-                 else if (state is LoadedBrand){
-                   return InputSelectWidget(title: "Enseigne", onChanged: (value)=>_onInputChanged('brand', value), options: state.brand, isRequired: true);
-                 }
-                 else{
-                   return Text("Error when Loading brand");
-                 }
-                },
-              ),
-              ActionButton(onSubmitForm: onSubmit, title: 'Inscrire')
-            ],
-          )),
+                  },
+                  builder: (context, state) {
+                    if(state is BrandInitial){
+                      BlocProvider.of<BrandBloc>(context).add(GetBrandEvent());
+                    }
+                   if(state is LoadingBrand){
+                     return Text("Loading brand");
+                   }
+                   else if (state is LoadedBrand){
+                     return InputSelectWidget(title: "Enseigne", onChanged: (value)=>_onInputChanged('brand', value), options: state.brand, isRequired: true);
+                   }
+                   else{
+                     return Text("Error when Loading brand");
+                   }
+                  },
+                ),
+                ActionButton(onSubmitForm: onSubmit, title: 'Inscrire' ,isLoading: isLoading)
+              ],
+            )),
+      ),
     );
   }
 }
