@@ -27,7 +27,7 @@ MultiBlocProvider buildBody(BuildContext context) {
       BlocProvider(create: (context)=> sl<BrandBloc>()),
       BlocProvider(create: (context)=> sl<RelatedUsersBloc>())
   ], child: Container(
-    margin: EdgeInsets.symmetric(vertical: 0,horizontal: 2),
+    margin: EdgeInsets.only(left:5 ,right: 5),
     child: BrandFormWidget(),
   ));
 }
