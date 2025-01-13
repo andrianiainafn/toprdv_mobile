@@ -25,6 +25,7 @@ void main() async {
   // Create a single instance of NotificationConfirmationBloc
   final notificationBloc = NotificationConfirmationBloc();
   final changeRankBLoc = ChangeRankBloc(di.sl());
+
   // Initialize OneSignal
   OneSignal.initialize("98a5e1a6-25f4-4d98-8995-69db1278271e");
   OneSignal.LiveActivities.setupDefault();
@@ -32,34 +33,47 @@ void main() async {
   // Set up notification handlers
   OneSignal.Notifications.requestPermission(true);
 
+  // Delay to ensure bloc is properly initialized
+  await Future.delayed(Duration.zero);
+
   OneSignal.Notifications.addClickListener((event) {
     print("clicked ");
-    notificationBloc.add(HandleNewNotification(event.notification));
-    NotificationHandler.handleNotificationClick(event.notification);
-    print('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
+    // Ensure we're not in a disposed state
+    try {
+      notificationBloc.add(HandleNewNotification(event.notification));
+      NotificationHandler.handleNotificationClick(event.notification);
+      print('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
+    } catch (e) {
+      print('Error handling notification click: $e');
+    }
   });
 
   OneSignal.Notifications.addForegroundWillDisplayListener((event) {
     print("Received in foreground");
-    notificationBloc.add(HandleNewNotification(event.notification));
-    event.preventDefault();
-    event.notification.display();
+    try {
+      notificationBloc.add(HandleNewNotification(event.notification));
+      event.preventDefault();
+      event.notification.display();
+    } catch (e) {
+      print('Error handling foreground notification: $e');
+    }
   });
 
   AblyService ablyService = AblyService();
   ablyService.initAbly();
 
   final beaconScannerBloc = BeaconScannerBloc(di.sl(),di.sl(),di.sl());
+  beaconScannerBloc.add(StartScanningEvent());
 
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => beaconScannerBloc),
         BlocProvider.value(
-          value: notificationBloc,  // Use the existing instance
+          value: notificationBloc,
         ),
         BlocProvider.value(
-          value: changeRankBLoc,  // Use the existing instance
+          value: changeRankBLoc,
         ),
       ],
       child: MyApp(navigatorKey: navigatorKey),
@@ -99,4 +113,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-  // beaconScannerBloc.add(StartScanningEvent());
