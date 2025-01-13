@@ -18,6 +18,7 @@ class BrandFormWidget extends StatefulWidget {
 
 class _BrandFormWidgetState extends State<BrandFormWidget> {
   List<RelatedBrand> brandSelected = [];
+  late bool _isLoading = false;
 
   @override
   void initState() {
@@ -30,6 +31,9 @@ class _BrandFormWidgetState extends State<BrandFormWidget> {
   }
   void onSubmitForm(){
     print("brand selected : $brandSelected");
+    setState(() {
+      _isLoading = true;
+    });
     BlocProvider.of<RelatedUsersBloc>(context).add(UpdateRelatedUserEvent(brandSelected));
   }
 
@@ -66,14 +70,17 @@ class _BrandFormWidgetState extends State<BrandFormWidget> {
               if (relatedUsersState is RelatedUsersLoaded) {
                 setState(() {
                   brandSelected = relatedUsersState.relatedUsers;
+                  _isLoading = false;
                 });
               }
             },
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment:  CrossAxisAlignment.center,
               children: [
                 Wrap(
-                  spacing: 8.0,
-                  runSpacing: 8.0,
+                  spacing: 4.0,
+                  runSpacing: 4.0,
                   children: brandState.brand.map((item) =>
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.48,
@@ -95,7 +102,10 @@ class _BrandFormWidgetState extends State<BrandFormWidget> {
                       ),
                   ).toList(),
                 ),
-                ActionButton(onSubmitForm: onSubmitForm, title: "Sauvegarder")
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 0,horizontal: 3),
+                    child: ActionButton(onSubmitForm: onSubmitForm, title: "Sauvegarder", isLoading: _isLoading,)
+                )
               ],
             ),
           );
