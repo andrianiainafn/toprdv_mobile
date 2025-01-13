@@ -15,7 +15,7 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource{
   Future<bool> changeRank(int appointmentId) async{
     final String? authToken = sharedPreferences.getString('access_token');
     final Uri uri = Uri.parse('${dotenv.env['BASE_URL']}/appointment/rank/$appointmentId');
-    final response = await client.put(
+    final response = await client.post(
       uri,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
