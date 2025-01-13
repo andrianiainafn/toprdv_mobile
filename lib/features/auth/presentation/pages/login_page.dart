@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
         children: [
           Container(
             margin: const EdgeInsets.all(10),
-            child: Text("Login",style: TextStyle(fontSize: 20),),
+            child: Text("Bienvenue à nouveau parmi nous !",style: TextStyle(fontSize: 20),),
           ),
           Container(
             margin: const EdgeInsets.all(10),
