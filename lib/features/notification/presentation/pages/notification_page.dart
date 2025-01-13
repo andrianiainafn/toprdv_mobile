@@ -16,7 +16,7 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  late int appointmentId;
+  late int appointmentId = 0;
   @override
   void initState() {
     super.initState();
@@ -24,34 +24,34 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   void _initializeOneSignal() async {
-    OneSignal.initialize("98a5e1a6-25f4-4d98-8995-69db1278271e");
-    OneSignal.LiveActivities.setupDefault();
-
-    OneSignal.User.pushSubscription.addObserver((state) {
-      print('optedIn: ${OneSignal.User.pushSubscription.optedIn}');
-      print('id: ${OneSignal.User.pushSubscription.id}');
-      print('token: ${OneSignal.User.pushSubscription.token}');
-      print(state.current.jsonRepresentation());
-    });
+    // OneSignal.initialize("98a5e1a6-25f4-4d98-8995-69db1278271e");
+    // OneSignal.LiveActivities.setupDefault();
+    //
+    // OneSignal.User.pushSubscription.addObserver((state) {
+    //   print('optedIn: ${OneSignal.User.pushSubscription.optedIn}');
+    //   print('id: ${OneSignal.User.pushSubscription.id}');
+    //   print('token: ${OneSignal.User.pushSubscription.token}');
+    //   print(state.current.jsonRepresentation());
+    // });
 
     await getToken();
-
-    OneSignal.Notifications.addForegroundWillDisplayListener((event) {
-      print('NOTIFICATION WILL DISPLAY LISTENER CALLED WITH: ${event.notification.jsonRepresentation()}');
-      event.preventDefault();
-      context.read<NotificationConfirmationBloc>().add(
-        HandleNewNotification(event.notification),
-      );
-      event.notification.display();
-    });
-
-    OneSignal.Notifications.addClickListener((event) {
-      NotificationHandler.handleNotificationClick(event.notification);
-      print('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
-      context.read<NotificationConfirmationBloc>().add(
-        HandleNewNotification(event.notification),
-      );
-    });
+    //
+    // OneSignal.Notifications.addForegroundWillDisplayListener((event) {
+    //   print('NOTIFICATION WILL DISPLAY LISTENER CALLED WITH: ${event.notification.jsonRepresentation()}');
+    //   event.preventDefault();
+    //   context.read<NotificationConfirmationBloc>().add(
+    //     HandleNewNotification(event.notification),
+    //   );
+    //   event.notification.display();
+    // });
+    //
+    // OneSignal.Notifications.addClickListener((event) {
+    //   NotificationHandler.handleNotificationClick(event.notification);
+    //   print('NOTIFICATION CLICK LISTENER CALLED WITH EVENT: $event');
+    //   context.read<NotificationConfirmationBloc>().add(
+    //     HandleNewNotification(event.notification),
+    //   );
+    // });
   }
   void updateAppointmentId(int id){
     setState(() {
@@ -65,12 +65,18 @@ class _NotificationPageState extends State<NotificationPage> {
       margin: const EdgeInsets.all(10),
       child: BlocConsumer<NotificationConfirmationBloc, NotificationConfirmationState>(
         listener: (context,state){
-          if(state is NotificationConfirmationTimeOut){
-            BlocProvider.of<ChangeRankBloc>(context).add(HandleChangeRank(appointmentId));
+          if (state is NotificationConfirmationTimeOut) {
+            final notificationBloc = context.read<NotificationConfirmationBloc>();
+            if (notificationBloc.currentAppointmentId != null) {
+              BlocProvider.of<ChangeRankBloc>(context).add(
+                HandleChangeRank(notificationBloc.currentAppointmentId!),
+              );
+            }
           }
-          if(state is NotificationConfirmationLoaded){
-            updateAppointmentId(state.notification.additionalData?['appointment_id']);
-          }
+          // if(state is NotificationConfirmationLoaded){
+          //   print(state.notification.additionalData?['appointment_id']);
+          //   updateAppointmentId(state.notification.additionalData?['appointment_id']);
+          // }
         },
         builder: (context, state) {
           if (state is NotificationConfirmationLoaded) {
