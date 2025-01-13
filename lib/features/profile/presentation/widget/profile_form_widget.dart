@@ -71,71 +71,73 @@ class _ProfileFormWidgetState extends State<ProfileFormWidget> {
         controllers['brandName']?.text = state.profile.brandName;
         _formData['phoneNumber'] = state.profile.landlinePhone ;
         controllers['phoneNumber']?.text = state.profile.landlinePhone;
-        return Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                InputWidget(
-                    isReadOnly: widget.isEdit,
-                    controller: controllers['firstname'],
-                    title: "Nom",
-                    type: "text",
-                    onChanged: (value)=> _onInputChanged('firstname', value),
-                    icon: Icons.person_2_outlined
-                ),
-                InputWidget(
-                    isReadOnly: widget.isEdit,
-                    controller: controllers['lastname'],
-                    title: "Prénom",
-                    type: "text",
-                    onChanged: (value)=> _onInputChanged('lastname', value),
-                    icon: Icons.person_2_outlined
-                ),
-                InputWidget(
-                    isReadOnly: widget.isEdit,
-                    title: "Email",
-                    type: "email",
-                    controller: controllers['email'],
-                    onChanged: (value)=> _onInputChanged('email', value),
-                    icon: Icons.email_outlined
-                ),
-                InputWidget(
-                    title: "Code postale",
-                    isReadOnly:widget.isEdit,
-                    controller: controllers['postalCode'],
-                    type: "text",
-                    onChanged: (value)=> _onInputChanged('postalCode',  value),
-                    icon: Icons.location_city_outlined
-                ),
-                InputWidget(title: "Ville",
-                    isReadOnly: widget.isEdit,
-                    controller: controllers['city'],
-                    type: "text",
-                    onChanged: (value)=> _onInputChanged('city',value),
-                    icon: Icons.location_city_outlined
-                ),
-                InputWidget(title: "Enseigne",
-                    isReadOnly: widget.isEdit,
-                    type: "text",
-                    controller: controllers['brandName'],
-                    onChanged: (value)=> _onInputChanged('brandName',value),
-                    icon: Icons.branding_watermark_outlined
-                ),
-                PhoneNumberInput(
-                    onChanged: (value)=> _onInputChanged('phoneNumber',value,),
-                    isEdit: widget.isEdit,
-                    phoneNumber: PhoneNumber(
-                        phoneNumber: state.profile.landlinePhone,
-                        isoCode: "MG",
-                        dialCode: "261"
-                    )
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 30),
-                  child: ActionButton(onSubmitForm: onSubmitForm, title: "Sauvegarder"),
-                ),
-              ],
-            )
+        return SingleChildScrollView(
+          child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  InputWidget(
+                      isReadOnly: widget.isEdit,
+                      controller: controllers['firstname'],
+                      title: "Nom",
+                      type: "text",
+                      onChanged: (value)=> _onInputChanged('firstname', value),
+                      icon: Icons.person_2_outlined
+                  ),
+                  InputWidget(
+                      isReadOnly: widget.isEdit,
+                      controller: controllers['lastname'],
+                      title: "Prénom",
+                      type: "text",
+                      onChanged: (value)=> _onInputChanged('lastname', value),
+                      icon: Icons.person_2_outlined
+                  ),
+                  InputWidget(
+                      isReadOnly: widget.isEdit,
+                      title: "Email",
+                      type: "email",
+                      controller: controllers['email'],
+                      onChanged: (value)=> _onInputChanged('email', value),
+                      icon: Icons.email_outlined
+                  ),
+                  InputWidget(
+                      title: "Code postale",
+                      isReadOnly:widget.isEdit,
+                      controller: controllers['postalCode'],
+                      type: "text",
+                      onChanged: (value)=> _onInputChanged('postalCode',  value),
+                      icon: Icons.location_city_outlined
+                  ),
+                  InputWidget(title: "Ville",
+                      isReadOnly: widget.isEdit,
+                      controller: controllers['city'],
+                      type: "text",
+                      onChanged: (value)=> _onInputChanged('city',value),
+                      icon: Icons.location_city_outlined
+                  ),
+                  InputWidget(title: "Enseigne",
+                      isReadOnly: widget.isEdit,
+                      type: "text",
+                      controller: controllers['brandName'],
+                      onChanged: (value)=> _onInputChanged('brandName',value),
+                      icon: Icons.branding_watermark_outlined
+                  ),
+                  PhoneNumberInput(
+                      onChanged: (value)=> _onInputChanged('phoneNumber',value,),
+                      isEdit: widget.isEdit,
+                      phoneNumber: PhoneNumber(
+                          phoneNumber: state.profile.landlinePhone,
+                          isoCode: "MG",
+                          dialCode: "261"
+                      )
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 30),
+                    child: ActionButton(onSubmitForm: onSubmitForm, title: "Sauvegarder", isLoading: state is ProfileLoading,),
+                  ),
+                ],
+              )
+          ),
         );
       }else{
         return Text("Error");
