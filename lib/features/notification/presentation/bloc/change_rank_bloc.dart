@@ -12,6 +12,7 @@ class ChangeRankBloc extends Bloc<ChangeRankEvent, ChangeRankState> {
   final ChangeRank changeRank;
   ChangeRankBloc(this.changeRank) : super(ChangeRankInitial()) {
     on<HandleChangeRank>((event, emit) async{
+      print('notificationId ; ${event.appointmentId}');
       emit(ChangeRankLoading());
       final response = await changeRank(Params(event.appointmentId));
       response.fold((failure){
