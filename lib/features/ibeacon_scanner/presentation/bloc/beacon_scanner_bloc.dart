@@ -26,6 +26,7 @@ class BeaconScannerBloc extends Bloc<BeaconScannerEvent, BeaconScannerState> {
 
   Future<void> _onStartScanning(
       StartScanningEvent event, Emitter<BeaconScannerState> emit) async {
+    print("tonga ato ve lo ty eeee");
     late List<Transmitter> transmitters;
     final response= await fetchTransmitter(NoParams());
     response.fold((failure){}, (transmitter){

@@ -15,7 +15,7 @@ class NavigationService {
 
 
   void navigateToBeaconScanner() {
-    router.replaceAll([const BeaconScannerRoute()]);
+    router.replaceAll([const ChooseRoute()]);
     // router.pushAndPopUntil(
     //   const NavigationRoute(children: [BeaconScannerRoute()]),
     //   predicate: (_) => false,
