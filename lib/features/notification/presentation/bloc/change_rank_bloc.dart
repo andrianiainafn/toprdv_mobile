@@ -3,6 +3,8 @@ import 'package:equatable/equatable.dart';
 import 'package:my_template_project/core/util/map_failure_message.dart';
 import 'package:my_template_project/features/notification/domain/usecases/change_rank.dart';
 
+import '../../../../core/config/ably_service.dart';
+
 part 'change_rank_event.dart';
 part 'change_rank_state.dart';
 
@@ -15,6 +17,11 @@ class ChangeRankBloc extends Bloc<ChangeRankEvent, ChangeRankState> {
       response.fold((failure){
         emit(ChangeRankError(mapFailureToMessage(failure)));
       }, (success){
+        final ablyService = AblyService();
+        ablyService.initAbly();
+        ablyService.publishAppointment({
+          'appointment': "appointment",
+        });
         emit(ChangeRankLoaded());
       });
     });
