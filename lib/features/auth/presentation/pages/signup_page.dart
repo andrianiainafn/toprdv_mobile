@@ -20,12 +20,14 @@ class SignUpPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            margin: const EdgeInsets.all(10),
-            child: Text("Signup",style: TextStyle(fontSize: 20),),
+            margin: const EdgeInsets.only(top: 50),
+            child: Text("Bienvenue à bord !",style: TextStyle(fontSize: 20),),
           ),
-          Container(
-            margin: const EdgeInsets.all(10),
-            child: buildBody(context),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(10),
+              child: buildBody(context),
+            ),
           )
         ],
       ),
