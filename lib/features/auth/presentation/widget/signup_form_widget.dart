@@ -58,74 +58,76 @@ class _SignupFormWidgetState extends State<SignupFormWidget> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc,AuthState>(builder: (context,state){
-      return Form(
-        key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                InputWidget(
-                    title: "Nom",
-                    type: "text",
-                    onChanged: (value)=> _onInputChanged('firstname', value),
-                    icon: Icons.person_2_outlined
-                ),
-                InputWidget(
-                    title: "Prénom",
-                    type: "text",
-                    onChanged: (value)=> _onInputChanged('lastname', value),
-                    icon: Icons.person_2_outlined
-                ),
-                InputWidget(
-                  icon: Icons.alternate_email_outlined,
-                  type: 'email',
-                  title: 'Email Address',
-                  onChanged: (value) => _onInputChanged('email', value),
-                ),
-                PhoneNumberInput(
-                    onChanged: (value)=> _onInputChanged('phoneNumber',value,), phoneNumber: null,
-                ),
-                InputWidget(
-                    title: "Code postale",
-                    type: "text",
-                    onChanged: (value)=> _onInputChanged('postalCode',  value),
-                    icon: Icons.location_city_outlined
-                ),
-                InputWidget(title: "Ville",
-                    type: "text",
-                    onChanged: (value)=> _onInputChanged('city',value),
-                    icon: Icons.location_city_outlined
-                ),
-                PasswordInputField(
-                  onChanged: (value) => _onInputChanged('password', value),
-                  title: "Mot de passe",
-                ),
-                Container(
-                    margin: EdgeInsets.only(top: 30),
-                    child: ActionButton(onSubmitForm: onSubmitForm, title: "S'inscrire")
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: Row(
-                    children: [
-                      const Text(
-                        "Vous avez deja un compte ?",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          context.navigateTo(LoginRoute());
-                        },
-                        child: const Text(
-                          'Se connecter',
-                          style: TextStyle(color: Colors.green, fontSize: 16),
+      return SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  InputWidget(
+                      title: "Nom",
+                      type: "text",
+                      onChanged: (value)=> _onInputChanged('firstname', value),
+                      icon: Icons.person_2_outlined
+                  ),
+                  InputWidget(
+                      title: "Prénom",
+                      type: "text",
+                      onChanged: (value)=> _onInputChanged('lastname', value),
+                      icon: Icons.person_2_outlined
+                  ),
+                  InputWidget(
+                    icon: Icons.alternate_email_outlined,
+                    type: 'email',
+                    title: 'Email Address',
+                    onChanged: (value) => _onInputChanged('email', value),
+                  ),
+                  PhoneNumberInput(
+                      onChanged: (value)=> _onInputChanged('phoneNumber',value,), phoneNumber: null,
+                  ),
+                  InputWidget(
+                      title: "Code postale",
+                      type: "text",
+                      onChanged: (value)=> _onInputChanged('postalCode',  value),
+                      icon: Icons.location_city_outlined
+                  ),
+                  InputWidget(title: "Ville",
+                      type: "text",
+                      onChanged: (value)=> _onInputChanged('city',value),
+                      icon: Icons.location_city_outlined
+                  ),
+                  PasswordInputField(
+                    onChanged: (value) => _onInputChanged('password', value),
+                    title: "Mot de passe",
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(top: 30),
+                      child: ActionButton(onSubmitForm: onSubmitForm, title: "S'inscrire",isLoading: state is Loading,)
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    child: Row(
+                      children: [
+                        const Text(
+                          "Vous avez deja un compte ?",
+                          style: TextStyle(fontSize: 16),
                         ),
-                      )
-                    ],
+                        TextButton(
+                          onPressed: () {
+                            context.navigateTo(LoginRoute());
+                          },
+                          child: const Text(
+                            'Se connecter',
+                            style: TextStyle(color: Colors.green, fontSize: 16),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
-                  ),
-          )
+                ],
+                    ),
+            )
+        ),
       );
     }, listener: (context,state){
       if (state is Loaded) {
