@@ -22,7 +22,8 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource{
         'Authorization': 'Bearer $authToken',
       },
     );
-    if(response.statusCode == 200){
+    print('code rank ${response.statusCode}');
+    if(response.statusCode == 202 || response.statusCode == 200){
       return true;
     }else{
       throw Exception("failed to change rank");
