@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment:  CrossAxisAlignment.start,
           children: [
-            buildFormBody(context, _isEdit),
+            Expanded(child: buildFormBody(context, _isEdit)),
             Container(
               margin: EdgeInsets.only(top:10),
               child: buildBody(context),
