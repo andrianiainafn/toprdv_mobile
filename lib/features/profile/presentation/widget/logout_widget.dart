@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/routes/app_router.gr.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 
@@ -17,7 +18,7 @@ class LogoutWidget extends StatelessWidget {
     },
         listener: (context, state) {
           if (state is Loaded) {
-            context.router.replaceNamed("/login");
+            context.router.replaceAll([const LoginRoute()]);
           }
           if (state is ErrorState) {
             ScaffoldMessenger.of(context).showSnackBar(
