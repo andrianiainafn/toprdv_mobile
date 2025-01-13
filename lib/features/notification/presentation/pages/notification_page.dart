@@ -68,10 +68,12 @@ class _NotificationPageState extends State<NotificationPage> {
           if(state is NotificationConfirmationTimeOut){
             BlocProvider.of<ChangeRankBloc>(context).add(HandleChangeRank(appointmentId));
           }
+          if(state is NotificationConfirmationLoaded){
+            updateAppointmentId(state.notification.additionalData?['appointment_id']);
+          }
         },
         builder: (context, state) {
           if (state is NotificationConfirmationLoaded) {
-            updateAppointmentId(state.notification.additionalData?['appointment_id']);
             return Card(
               child: Padding(
                 padding: const EdgeInsets.all(8.0), // Ajout d'un padding pour plus d'espace
