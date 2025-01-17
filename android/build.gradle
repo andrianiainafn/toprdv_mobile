@@ -2,6 +2,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:8.0.2"
@@ -15,16 +16,29 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.12.0'
+            force 'androidx.core:core-ktx:1.12.0'
+            force 'androidx.appcompat:appcompat:1.6.1'
+        }
     }
 }
 
+ext {
+    compileSdkVersion   = 34
+    targetSdkVersion    = 34
+    appCompatVersion    = "1.7.0"
+}
+
 rootProject.buildDir = "../build"
+subprojects { afterEvaluate { android { compileSdkVersion 34 } } }
+
 subprojects {
     afterEvaluate { project ->
-        // check only for "com.android.library" to not modify
-        // your "app" subproject. All plugins will have "com.android.library" plugin, and only your app "com.android.application"
-        // Change your application's namespace in main build.gradle and in main android block.
-
         if (project.plugins.hasPlugin("com.android.library")) {
             project.android {
                 if (namespace == null) {

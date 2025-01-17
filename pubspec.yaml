@@ -22,29 +22,29 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_beacon: ^0.5.1
-  permission_handler: ^11.3.1
-  cupertino_icons: ^1.0.8
-  flutter_bloc: ^8.1.6
+  flutter_beacon: ^0.5.1  # or whatever is the latest version
+  permission_handler:
+  cupertino_icons:
+  flutter_bloc:
   equatable:
-  http: ^1.2.2
-  ably_flutter: ^1.2.36
+  http:
+  ably_flutter:
   shared_preferences:
   auto_route:
-  flutter_dotenv: ^5.2.1
-  get_it: ^8.0.3
-  dartz: ^0.10.1
-  intl_phone_number_input: ^0.7.4
-  freezed_annotation: ^2.4.4
+  flutter_dotenv:
+  get_it:
+  dartz:
+  intl_phone_number_input:
+  freezed_annotation:
   json_annotation:
-  intl: ^0.20.1
+  intl:
   audioplayers:
   video_player:
 #  firebase_core:
 #  firebase_messaging:
   flutter_local_notifications:
-  onesignal_flutter: ^5.2.9
-  flutter_background_service:
+  onesignal_flutter:
+  flutter_background_service: ^5.1.0
 
 
 dev_dependencies:
